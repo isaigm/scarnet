@@ -4,7 +4,7 @@ This repository contains the code for classifying acne scars using a Deep Learni
 
 ## Project Overview
 
-The goal of this project is to classify different types of acne scars from images. Due to an issue in the original paper's architecture, we opted for a **Transfer Learning** approach using a pre-trained model (ResNet18) on ImageNet, and fine-tuned it for this specific task.
+The goal of this project is to classify different types of acne scars from images. Due to an issue in the original paper's architecture, I opted for a **Transfer Learning** approach using a pre-trained model (ResNet18) on ImageNet, and fine-tuned it for this specific task.
 
 ## Dataset
 
@@ -20,7 +20,7 @@ This dataset was adapted from the paper "ScarNet: Development and Validation of 
 
 ## Model Architecture and Training
 
-Because of a discrepancy in the original paper's model description, we implemented a **Transfer Learning** approach. We used **ResNet18** pre-trained on ImageNet and replaced its classifier head to adapt it for acne scar classification.
+Because of a discrepancy in the original paper's model description, we implemented a **Transfer Learning** approach. I used **ResNet18** pre-trained on ImageNet and replaced its classifier head to adapt it for acne scar classification.
 
 Training is performed using the `train_scarnet.py` script. Our transfer learning experiments yielded an accuracy between **83% and 89%**. The confusion matrix from testing shows that the model performs robustly without significant bias toward any class.
 
