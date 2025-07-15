@@ -20,9 +20,9 @@ This dataset was adapted from the paper "ScarNet: Development and Validation of 
 
 ## Model Architecture and Training
 
-Because of a discrepancy in the original paper's model description, we implemented a **Transfer Learning** approach. I used **ResNet18** pre-trained on ImageNet and replaced its classifier head to adapt it for acne scar classification.
+Because of a discrepancy in the original paper's model description, I implemented a **Transfer Learning** approach. I used **ResNet18** pre-trained on ImageNet and replaced its classifier head to adapt it for acne scar classification.
 
-Training is performed using the `train_scarnet.py` script. Our transfer learning experiments yielded an accuracy between **83% and 89%**. The confusion matrix from testing shows that the model performs robustly without significant bias toward any class.
+Training is performed using the `train_scarnet.py` script. My transfer learning experiments yielded an accuracy between **83% and 89%**. The confusion matrix from testing shows that the model performs robustly without significant bias toward any class.
 
 ## Repository Structure
 
