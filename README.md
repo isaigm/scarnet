@@ -1,19 +1,20 @@
-# Acne Scar Classification with Deep Learning
+# Acne Scar Classification: A Rigorous Replication Study
 
-## A Replication and Optimization Study of the "ScarNet" Paper
+## Abstract
 
-This project presents a Deep Learning model capable of classifying 4 types of acne scars with a **final accuracy of 84.4%** on the full dataset.
+This project began as a replication study of the "ScarNet" paper, which reported 92.5% accuracy in classifying acne scars. During the study, significant methodological challenges were identified, including reproducibility issues and a high risk of **data leakage**, which likely inflated the original results.
 
-The work began as an attempt to replicate the results of the paper "ScarNet: Development and Validation of a Novel Deep CNN Model" (IEEE Access). However, during the process, methodological challenges related to reproducibility and potential **data leakage** were identified.
+In response, a superior and more robust solution was engineered using **Transfer Learning** with a fine-tuned ResNet18. The final strategy involved merging visually similar classes, applying advanced `RandAugment` data augmentation, and implementing a 2-stage progressive fine-tuning process.
 
-As a result, the project evolved into a comparative analysis, culminating in the development of a more robust and reliable model based on **Transfer Learning**. This approach was demonstrated to be superior to training a CNN from scratch for this specific dataset.
+To ensure a scientifically sound measure of performance, the final model was subjected to **K-Fold Cross-Validation**. This rigorous validation yielded a final, honest performance metric of **64.4% ± 5.9% average accuracy**, which represents the true expected performance of the model on this challenging, limited dataset.
 
-## Final Model Features
+## Final Model Strategy
 
-- **Overall Accuracy:** 84.4% (evaluated on the full 250-image dataset).
-- **Model:** ResNet18 with Transfer Learning.
-- **Data Strategy:** A 4-class problem, merging the 'Rolling' and 'Boxcar' classes due to their high visual similarity.
-- **Key Techniques:**
+- **Core Technique:** ResNet18 with Transfer Learning.
+- **Final Performance Metric:** **64.4% ± 5.9%** (5-Fold Cross-Validation Accuracy).
+- **Data Strategy:** A 4-class problem, merging the 'Rolling' and 'Boxcar' classes due to their high visual similarity and the data scarcity of the former.
+- **Key Methods:**
+  - K-Fold Cross-Validation for robust evaluation.
   - 2-Stage Progressive Fine-Tuning.
   - Advanced data augmentation with `RandAugment`.
   - Class imbalance handling with `WeightedRandomSampler`.
@@ -28,10 +29,11 @@ As a result, the project evolved into a comparative analysis, culminating in the
 |   |-- Ice Pick/
 |   |-- Keloid/
 |   `-- Rolling/
-|-- resnet_4class_randaugment_final_model.pth  <-- The final trained model
-|-- train_scarnet.py                           <-- Script to train the model from scratch
-|-- test_model.py                              <-- Script to evaluate the model on the full dataset
-|-- predict_single_image.py                    <-- Script to predict a single image
+|-- resnet_4class_randaugment_final_model.pth  <-- A trained model from a single split
+|-- train_scarnet.py                           <-- Script to train a single model
+|-- cross_validation.py                        <-- Script for rigorous K-Fold Cross-Validation
+|-- test_model.py                              <-- Script to evaluate a single model on the full dataset
+|-- predict_single_image.py                    <-- Script to predict with a single model
 |-- requirements.txt                           <-- Project dependencies
 `-- README.md
 ```
@@ -62,51 +64,66 @@ It is recommended to use a virtual environment to run this project.
 
 ## Usage
 
-### 1. Train the Model
-To train the model from scratch and replicate the results, simply run:
+The recommended workflow is to first verify the robust performance metric using cross-validation, and then train a single model for inference tasks.
+
+### 1. Run K-Fold Cross-Validation (Recommended for Performance Evaluation)
+
+This is the most important script for rigorously evaluating the model's performance. It runs the entire training and testing process 5 times on different data splits and reports the average accuracy and standard deviation, providing the final, unbiased performance metric.
+
+```bash
+python cross_validation.py```
+
+### 2. Train a Single Model
+
+If you want to generate a single `.pth` model file for prediction tasks, use this script. It will run the training process on a single 80/20 split. Note that the final accuracy will vary depending on the random split, as demonstrated by the cross-validation results.
+
 ```bash
 python train_scarnet.py
 ```
-This script will train the model using the final strategy (ResNet18, 4 classes, etc.) and save the best-performing model as `resnet_4class_randaugment_final_model.pth`.
 
-### 2. Evaluate the Trained Model
-To evaluate the provided `resnet_4class_randaugment_final_model.pth` on the entire dataset, run:
+### 3. Evaluate a Single Trained Model
+
+To analyze the performance of a saved model (like the one generated by `train_scarnet.py`) on all 250 images, run:
+
 ```bash
 python test_model.py
 ```
-This will print the classification report and overall accuracy to the console, and it will display a confusion matrix and a sample of predictions.
+This is useful for generating a global confusion matrix and visualizing specific predictions.
 
-### 3. Predict a Single Image
-To use the model to classify a new image, use the `predict_single_image.py` script and pass the path to the image:
+### 4. Predict with a Single Image
+
+To classify a new image with a trained model, use:
+
 ```bash
 python predict_single_image.py --image "path/to/your/image.jpg"
 ```
-For example:
+Example:
 ```bash
 python predict_single_image.py --image "dataset/Ice Pick/icepick (1).png"
 ```
 
-## Final Results
+## Performance Evaluation & Key Results
 
-The final model, trained with the 4-class strategy, achieved an **overall accuracy of 84.4%** on the full dataset.
+### Rigorous K-Fold Cross-Validation (The Scientific Truth)
 
-#### Classification Report:
-| Class        | Precision | Recall | F1-Score | Support |
-| :----------- | :-------- | :----- | :------- | :------ |
-| **Boxcar**   | 0.9718    | 0.6970 | 0.8118   | 99      |
-| **Hypertrophic** | 0.9000    | 0.9000 | 0.9000   | 50      |
-| **Ice Pick** | 0.6712    | 0.9800 | 0.7967   | 50      |
-| **Keloid**   | 0.8571    | 0.9412 | 0.8972   | 51      |
-|--------------|-----------|--------|----------|---------|
-| **Macro Avg**| 0.8501    | 0.8795 | 0.8514   | 250     |
-| **Weighted Avg**| 0.8739 | 0.8440 | 0.8438 | 250 |
+To obtain a reliable and unbiased measure of the model's true performance, a 5-Fold Cross-Validation was implemented. This process trains and evaluates 5 separate models on different subsets of the data, eliminating the "lucky split" bias.
 
-## Methodology and Key Findings
+-   **Accuracy per Fold:** `[72.0%, 58.0%, 70.0%, 58.0%, 64.0%]`
+-   **Average Accuracy:** **64.4%**
+-   **Standard Deviation:** **5.9%**
 
--   **Irreproducibility of the Original Paper:** It was concluded that the results from the `ScarNet` paper are likely a product of **data leakage** in their pre-augmentation methodology. This is a common pitfall that leads to inflated and non-generalizable results.
--   **Ineffectiveness of Training from Scratch:** Multiple attempts to train a CNN from scratch (even with robust architectures and advanced techniques) proved ineffective due to the **extreme scarcity of data**, resulting in severe overfitting.
--   **Superiority of Transfer Learning:** A **Transfer Learning** approach on the standard **RGB** color space was scientifically demonstrated to be a fundamentally superior strategy for this problem.
--   **Class Merging as a Strategic Decision:** The 'Rolling' scar class could not be learned independently due to its high visual similarity to 'Boxcar' and the lack of clear, discriminative features in the dataset. Merging these two classes was a key decision to achieve a robust and well-balanced model.
+The final, scientifically rigorous result is **64.4% ± 5.9%**. This is the most honest estimate of how the model is expected to perform on new, unseen data. The variance between folds confirms that the dataset is challenging and performance is sensitive to data distribution.
+
+### Single Split Evaluation (The "Lucky Split")
+
+For context, when evaluated on a single, fixed 80/20 train/test split, the model achieved a promising but potentially biased accuracy of **84.4%**. This result highlights the model's potential but underscores the importance of cross-validation for a true measure of performance.
+
+## Key Findings & Conclusion
+
+-   **Irreproducibility of the "ScarNet" Paper:** The original paper's results are likely a product of **data leakage**, a common pitfall that leads to inflated and non-generalizable results.
+-   **Superiority of Transfer Learning:** A **Transfer Learning** approach on the standard **RGB** color space was scientifically demonstrated to be a fundamentally superior strategy over training a custom CNN from scratch on this limited dataset.
+-   **Importance of Rigorous Validation:** This study underscores that a single train/test split can be misleading. **K-Fold Cross-Validation** provides a much more robust and realistic measure of a model's true capabilities.
+-   **Final Verdict:** The developed methodology represents a robust solution to a challenging fine-grained classification problem, with its real-world performance honestly quantified by cross-validation.
 
 ## License
 
