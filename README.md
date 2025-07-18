@@ -11,7 +11,7 @@ To ensure a scientifically sound measure of performance, the final model was sub
 ## Final Model Strategy
 
 - **Core Technique:** ResNet18 with Transfer Learning.
-- **Final Performance Metric:** **64.4% ± 5.9%** (5-Fold Cross-Validation Accuracy).
+- **Final Performance Metric:** **64.4% ± 5.85%** (5-Fold Cross-Validation Accuracy).
 - **Data Strategy:** A 4-class problem, merging the 'Rolling' and 'Boxcar' classes due to their high visual similarity and the data scarcity of the former.
 - **Key Methods:**
   - K-Fold Cross-Validation for robust evaluation.
