@@ -71,8 +71,8 @@ The recommended workflow is to first verify the robust performance metric using 
 This is the most important script for rigorously evaluating the model's performance. It runs the entire training and testing process 5 times on different data splits and reports the average accuracy and standard deviation, providing the final, unbiased performance metric.
 
 ```bash
-python cross_validation.py```
-
+python cross_validation.py
+```
 ### 2. Train a Single Model
 
 If you want to generate a single `.pth` model file for prediction tasks, use this script. It will run the training process on a single 80/20 split. Note that the final accuracy will vary depending on the random split, as demonstrated by the cross-validation results.
