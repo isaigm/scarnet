@@ -6,7 +6,7 @@ This project began as a replication study of the "ScarNet" paper, which reported
 
 In response, a superior and more robust solution was engineered using **Transfer Learning** with a fine-tuned ResNet18. The final strategy involved merging visually similar classes, applying advanced `RandAugment` data augmentation, and implementing a 2-stage progressive fine-tuning process.
 
-To ensure a scientifically sound measure of performance, the final model was subjected to **K-Fold Cross-Validation**. This rigorous validation yielded a final, honest performance metric of **64.4% ± 5.9% average accuracy**, which represents the true expected performance of the model on this challenging, limited dataset.
+To ensure a scientifically sound measure of performance, the final model was subjected to **K-Fold Cross-Validation**. This rigorous validation yielded a final, honest performance metric of **64.4% ± 5.85% average accuracy**, which represents the true expected performance of the model on this challenging, limited dataset.
 
 ## Final Model Strategy
 
