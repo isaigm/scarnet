@@ -110,9 +110,9 @@ To obtain a reliable and unbiased measure of the model's true performance, a 5-F
 
 -   **Accuracy per Fold:** `[72.0%, 58.0%, 70.0%, 58.0%, 64.0%]`
 -   **Average Accuracy:** **64.4%**
--   **Standard Deviation:** **5.9%**
+-   **Standard Deviation:** **5.85%**
 
-The final, scientifically rigorous result is **64.4% ± 5.9%**. This is the most honest estimate of how the model is expected to perform on new, unseen data. The variance between folds confirms that the dataset is challenging and performance is sensitive to data distribution.
+The final, scientifically rigorous result is **64.4% ± 5.85%**. This is the most honest estimate of how the model is expected to perform on new, unseen data. The variance between folds confirms that the dataset is challenging and performance is sensitive to data distribution.
 
 ### Single Split Evaluation (The "Lucky Split")
 
