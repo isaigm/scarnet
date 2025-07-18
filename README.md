@@ -99,7 +99,7 @@ python predict_single_image.py --image "path/to/your/image.jpg"
 ```
 Example:
 ```bash
-python predict_single_image.py --image "dataset/Ice Pick/icepick (1).png"
+python predict_single_image.py --image "dataset/Ice Pick/ip(1).jpg"
 ```
 
 ## Performance Evaluation & Key Results
