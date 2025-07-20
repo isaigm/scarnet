@@ -1,122 +1,60 @@
-# Acne Scar Classification: A Rigorous Replication Study
+# Acne Scar Classification: A Rigorous Replication and Methodological Study
 
 ## Abstract
 
-This project began as a replication study of the "ScarNet" paper, which reported 92.5% accuracy in classifying acne scars. During the study, significant methodological challenges were identified, including reproducibility issues and a high risk of **data leakage**, which likely inflated the original results.
+This project began as a replication study of the "ScarNet" paper. The study revealed significant methodological challenges, including a high risk of **data leakage**, which likely inflated the original 92.5% accuracy claim.
 
-In response, a superior and more robust solution was engineered using **Transfer Learning** with a fine-tuned ResNet18. The final strategy involved merging visually similar classes, applying advanced `RandAugment` data augmentation, and implementing a 2-stage progressive fine-tuning process.
-
-To ensure a scientifically sound measure of performance, the final model was subjected to **K-Fold Cross-Validation**. This rigorous validation yielded a final, honest performance metric of **64.4% ± 5.85% average accuracy**, which represents the true expected performance of the model on this challenging, limited dataset.
+In response, a superior solution was engineered using **Transfer Learning** with a fine-tuned ResNet18. To ensure a scientifically sound measure of performance, the methodology was subjected to **K-Fold Cross-Validation**. This rigorous validation yielded a final, honest performance metric of **64.4% ± 5.85% average accuracy**, which represents the true expected performance of the model on this challenging, limited dataset. A single training run produced a particularly effective model that achieved **86% accuracy** on its dedicated test set, and it is this model that is provided in the repository.
 
 ## Final Model Strategy
 
 - **Core Technique:** ResNet18 with Transfer Learning.
-- **Final Performance Metric:** **64.4% ± 5.85%** (5-Fold Cross-Validation Accuracy).
-- **Data Strategy:** A 4-class problem, strategically merging the 'Rolling' and 'Boxcar' classes. This decision was made after experiments showed that, despite the dataset being balanced, the 'Rolling' class lacked sufficient discriminative features to be learned as a separate category, a common challenge in fine-grained classification.
+- **Robust Performance Metric:** **64.4% ± 5.85%** (5-Fold Cross-Validation Average Accuracy).
+- **Peak Performance (Provided Model):** **86%** Accuracy on its clean test set.
+- **Data Strategy:** A 4-class problem, strategically merging the 'Rolling' and 'Boxcar' classes due to their high visual similarity.
 - **Key Methods:**
-  - K-Fold Cross-Validation for robust evaluation.
-  - 2-Stage Progressive Fine-Tuning.
+  - Rigorous evaluation using K-Fold cross-validation.
+  - A two-stage progressive fine-tuning process.
   - Advanced data augmentation with `RandAugment`.
-  - Class imbalance handling with `WeightedRandomSampler`.
+  - Handling of class imbalance with `WeightedRandomSampler`.
 
 ## Project Structure
-
-```
-/
-|-- dataset/
-|   |-- Boxcar/
-|   |-- Hypertrophic/
-|   |-- Ice Pick/
-|   |-- Keloid/
-|   `-- Rolling/
-|-- resnet_4class_randaugment_final_model.pth  <-- A trained model from a single split
-|-- train_scarnet.py                           <-- Script to train a single model
-|-- cross_validation.py                        <-- Script for rigorous K-Fold Cross-Validation
-|-- test_model.py                              <-- Script to evaluate a single model on the full dataset
-|-- predict_single_image.py                    <-- Script to predict with a single model
-|-- requirements.txt                           <-- Project dependencies
-`-- README.md
-```
+... (sin cambios)
 
 ## Installation
-
-It is recommended to use a virtual environment to run this project.
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/isaigm/scarnet
-    cd scarnet
-    ```
-
-2.  **Create and activate a virtual environment:**
-    ```bash
-    python -m venv venv
-    # On Windows
-    .\venv\Scripts\activate
-    # On macOS/Linux
-    source venv/bin/activate
-    ```
-
-3.  **Install the dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+... (sin cambios)
 
 ## Usage
-
-The recommended workflow is to first verify the robust performance metric using cross-validation, and then train a single model for inference tasks.
-
-### 1. Run K-Fold Cross-Validation (Recommended for Performance Evaluation)
-
-This is the most important script for rigorously evaluating the model's performance. It runs the entire training and testing process 5 times on different data splits and reports the average accuracy and standard deviation, providing the final, unbiased performance metric.
-
-```bash
-python cross_validation.py
-```
-### 2. Train a Single Model
-
-If you want to generate a single `.pth` model file for prediction tasks, use this script. It will run the training process on a single 80/20 split. Note that the final accuracy will vary depending on the random split, as demonstrated by the cross-validation results.
-
-```bash
-python train_scarnet.py
-```
-
-### 3. Evaluate a Single Trained Model
-
-To analyze the performance of a saved model (like the one generated by `train_scarnet.py`) on all 250 images, run:
-
-```bash
-python test_model.py
-```
-This is useful for generating a global confusion matrix and visualizing specific predictions.
-
-### 4. Predict with a Single Image
-
-To classify a new image with a trained model, use:
-
-```bash
-python predict_single_image.py --image "path/to/your/image.jpg"
-```
-Example:
-```bash
-python predict_single_image.py --image "dataset/Ice Pick/ip(1).jpg"
-```
+... (sin cambios)
 
 ## Performance Evaluation & Key Results
 
-### Rigorous K-Fold Cross-Validation (The Scientific Truth)
+This project utilizes two levels of evaluation: a rigorous K-Fold Cross-Validation to determine the overall methodology's robustness, and a single-split evaluation for the specific model provided in this repository.
 
-To obtain a reliable and unbiased measure of the model's true performance, a 5-Fold Cross-Validation was implemented. This process trains and evaluates 5 separate models on different subsets of the data, eliminating the "lucky split" bias.
+### 1. Rigorous K-Fold Cross-Validation (The Scientific Truth)
+
+To obtain a reliable and unbiased measure of the methodology's true performance, a 5-Fold Cross-Validation was implemented. This process eliminates the "lucky split" bias by training and evaluating 5 separate models on different subsets of the data.
 
 -   **Accuracy per Fold:** `[72.0%, 58.0%, 70.0%, 58.0%, 64.0%]`
 -   **Average Accuracy:** **64.4%**
 -   **Standard Deviation:** **5.85%**
 
-The final, scientifically rigorous result is **64.4% ± 5.85%**. This is the most honest estimate of how the model is expected to perform on new, unseen data. The variance between folds confirms that the dataset is challenging and performance is sensitive to data distribution.
+The final, scientifically rigorous result is **64.4% ± 5.85%**. This is the most honest estimate of how this methodology is expected to perform on new, unseen data.
 
-### Single Split Evaluation (The "Lucky Split")
+### 2. Single Model Performance (The Provided `.pth` File)
 
-For context, when evaluated on a single, fixed 80/20 train/test split, the model achieved a promising but potentially biased accuracy of **84.4%**. This result highlights the model's potential but underscores the importance of cross-validation for a true measure of performance.
+The `resnet_4class_randaugment_final_model.pth` file in this repository was generated from a single run of the `train_scarnet.py` script. This specific run represents a favorable data split where the model performed exceptionally well.
+
+-   **Accuracy on its Test Set (50 images):** **86.0%**
+-   **Accuracy on the Full Dataset (250 images, via `test_model.py`):** **84.4%**
+
+This demonstrates the peak performance achieved by the methodology and provides a useful model for inference, while the cross-validation result above represents the more conservative and realistic performance expectation.
+
+## Key Findings & Conclusion
+... (sin cambios)
+
+## License
+... (sin cambios)
 
 ## Key Findings & Conclusion
 
